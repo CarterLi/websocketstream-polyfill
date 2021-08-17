@@ -1,0 +1,31 @@
+{
+  "name": "websocketstream-polyfill",
+  "version": "1.0.0",
+  "description": "WebSocketStream Polyfill",
+  "main": "index.js",
+  "module": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -d -p ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CarterLi/websocketstream-polyfill.git"
+  },
+  "keywords": [
+    "StreamApi",
+    "WebSocket",
+    "WebSocketStream"
+  ],
+  "author": "李通洲 <carter.li@eoitek.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CarterLi/websocketstream-polyfill/issues",
+    "email": "carter.li@eoitek.com"
+  },
+  "homepage": "https://github.com/CarterLi/websocketstream-polyfill#readme",
+  "devDependencies": {
+    "typescript": "^4.3.5"
+  }
+}
