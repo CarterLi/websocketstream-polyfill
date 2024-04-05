@@ -5,7 +5,7 @@
  */
 export class WebSocketStream {
     url;
-    connection;
+    opened;
     closed;
     close;
     constructor(url, options = {}) {
@@ -14,8 +14,8 @@ export class WebSocketStream {
         }
         this.url = url;
         const ws = new WebSocket(url, options.protocols ?? []);
-        const closeWithInfo = ({ code, reason } = {}) => ws.close(code, reason);
-        this.connection = new Promise((resolve, reject) => {
+        const closeWithInfo = ({ closeCode: code, reason } = {}) => ws.close(code, reason);
+        this.opened = new Promise((resolve, reject) => {
             ws.onopen = () => {
                 resolve({
                     readable: new ReadableStream({
@@ -39,7 +39,7 @@ export class WebSocketStream {
         });
         this.closed = new Promise((resolve, reject) => {
             ws.onclose = ({ code, reason }) => {
-                resolve({ code, reason });
+                resolve({ closeCode: code, reason });
                 ws.removeEventListener('error', reject);
             };
             ws.addEventListener('error', reject);
