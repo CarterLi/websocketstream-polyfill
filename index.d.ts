@@ -5,7 +5,7 @@ export interface WebSocketConnection<T extends Uint8Array | string = Uint8Array 
     extensions: string;
 }
 export interface WebSocketCloseInfo {
-    code?: number;
+    closeCode?: number;
     reason?: string;
 }
 export interface WebSocketStreamOptions {
@@ -19,7 +19,7 @@ export interface WebSocketStreamOptions {
  */
 export declare class WebSocketStream<T extends Uint8Array | string = Uint8Array | string> {
     readonly url: string;
-    readonly connection: Promise<WebSocketConnection<T>>;
+    readonly opened: Promise<WebSocketConnection<T>>;
     readonly closed: Promise<WebSocketCloseInfo>;
     readonly close: (closeInfo?: WebSocketCloseInfo) => void;
     constructor(url: string, options?: WebSocketStreamOptions);

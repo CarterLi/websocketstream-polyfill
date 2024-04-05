@@ -6,7 +6,7 @@ export interface WebSocketConnection<T extends Uint8Array | string = Uint8Array 
 }
 
 export interface WebSocketCloseInfo {
-  code?: number;
+  closeCode?: number;
   reason?: string;
 }
 
@@ -23,7 +23,7 @@ export interface WebSocketStreamOptions {
 export class WebSocketStream<T extends Uint8Array | string = Uint8Array | string> {
   readonly url: string;
 
-  readonly connection: Promise<WebSocketConnection<T>>;
+  readonly opened: Promise<WebSocketConnection<T>>;
 
   readonly closed: Promise<WebSocketCloseInfo>;
 
@@ -38,9 +38,9 @@ export class WebSocketStream<T extends Uint8Array | string = Uint8Array | string
 
     const ws = new WebSocket(url, options.protocols ?? []);
 
-    const closeWithInfo = ({ code, reason }: WebSocketCloseInfo = {}) => ws.close(code, reason);
+    const closeWithInfo = ({ closeCode: code, reason }: WebSocketCloseInfo = {}) => ws.close(code, reason);
 
-    this.connection = new Promise((resolve, reject) => {
+    this.opened = new Promise((resolve, reject) => {
       ws.onopen = () => {
         resolve({
           readable: new ReadableStream<T>({
@@ -65,7 +65,7 @@ export class WebSocketStream<T extends Uint8Array | string = Uint8Array | string
 
     this.closed = new Promise<WebSocketCloseInfo>((resolve, reject) => {
       ws.onclose = ({ code, reason }) => {
-        resolve({ code, reason });
+        resolve({ closeCode: code, reason });
         ws.removeEventListener('error', reject);
       };
       ws.addEventListener('error', reject);
